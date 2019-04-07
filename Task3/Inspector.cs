@@ -8,27 +8,19 @@ namespace Task3
 {
     class Inspector
     {
-        public delegate void InspectorEventHandler(object sender, Driver args);
-        public event InspectorEventHandler WritingTicket;
-
-
-        public void MakeTicket(Driver driver)
+        public void OnMakeTicket(object sender, Driver driver)
         {
-            Console.WriteLine("Your current speed is " + driver.CurrentSpeed);
+            int speedDifference = driver.CurrentSpeed - Driver.MaxSpeed;
 
-            if(driver.CurrentSpeed > 60)
-                OnTicketWriting(driver);
+            if (speedDifference > 20)
+                Console.WriteLine("Штраф 500 грн.");
+            else if (speedDifference > 10)
+                Console.WriteLine("Штраф 200 грн.");
+            else if (speedDifference > 0)
+                Console.WriteLine("Штраф 100 грн.");
             else
                 Console.WriteLine("Нет штрафа. Едь дальше :)");
-            
 
-        }
-
-        protected virtual void OnTicketWriting(Driver driver)
-        {
-            InspectorEventHandler ticketEvent = WritingTicket;
-
-            ticketEvent?.Invoke(this, driver);
         }
 
     }

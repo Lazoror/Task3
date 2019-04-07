@@ -8,6 +8,9 @@ namespace Task3
 {
     class Driver : EventArgs
     {
+        public delegate void InspectorEventHandler(object sender, Driver args);
+        public event InspectorEventHandler WritingTicket;
+        public const int MaxSpeed = 60;
         private int _currentSpeed;
 
         public int CurrentSpeed
@@ -22,11 +25,25 @@ namespace Task3
                     _currentSpeed = value;
             }
         }
-        public const int MaxSpeed = 60;
 
         public Driver(int speed)
         {
             CurrentSpeed = speed;
+        }
+
+
+        public void MakeTicket(Driver driver)
+        {
+            Console.WriteLine("Current speed is " + driver.CurrentSpeed);
+
+            OnTicketWriting(driver);
+        }
+
+        protected virtual void OnTicketWriting(Driver driver)
+        {
+            InspectorEventHandler ticketEvent = WritingTicket;
+
+            ticketEvent?.Invoke(this, driver);
         }
 
     }
